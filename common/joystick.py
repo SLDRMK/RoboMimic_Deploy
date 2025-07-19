@@ -6,22 +6,22 @@ from enum import IntEnum, unique
 
 @unique
 class JoystickButton(IntEnum):
-    # Standard PlayStation/Xbox Layout
-    A = 0      # PS: Cross(×), Xbox: A
-    B = 1      # PS: Circle(○), Xbox: B
-    X = 2      # PS: Square(□), Xbox: X
-    Y = 3      # PS: Triangle(△), Xbox: Y
-    L1 = 4     # Left Bumper (L1 on PS)
-    R1 = 5     # Right Bumper (R1 on PS)
-    SELECT = 6   # Select/Share button
-    START = 7  # Start/Options button
-    L3 = 8     # Left Stick Press
-    R3 = 9     # Right Stick Press
-    HOME = 10  # PS: PS FSMCommand, Xbox: Xbox FSMCommand
-    UP = 11    # D-pad Up (if mapped as separate button)
-    DOWN = 12  # D-pad Down
-    LEFT = 13  # D-pad Left
-    RIGHT = 14 # D-pad Right
+    # 根据实际手柄映射调整
+    A = 0      # 确认按钮
+    B = 1      # 取消按钮
+    X = 3      # 方形按钮
+    Y = 4      # 三角形按钮
+    L1 = 6     # 左肩键
+    R1 = 7     # 右肩键
+    SELECT = 15  # Select/View按钮
+    START = 11 # Start按钮
+    L3 = 8     # 左摇杆按下 (保持原值)
+    R3 = 9     # 右摇杆按下 (保持原值)
+    HOME = 10  # Home按钮 (保持原值)
+    UP = 2     # D-pad上 (重新分配ID避免冲突)
+    DOWN = 12  # D-pad下
+    LEFT = 13  # D-pad左
+    RIGHT = 14 # D-pad右
 
 class JoyStick:
     def __init__(self):

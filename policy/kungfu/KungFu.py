@@ -88,7 +88,6 @@ class KungFu(FSMState):
         
         
     def run(self):
-        
         gravity_orientation = self.state_cmd.gravity_ori.reshape(-1)
         qj = self.state_cmd.q.reshape(-1)
         dqj = self.state_cmd.dq.reshape(-1)
@@ -100,7 +99,6 @@ class KungFu(FSMState):
         qj_23dof = (qj_23dof - default_angles_23dof) * self.dof_pos_scale
         dqj_23dof = dqj_23dof * self.dof_vel_scale
         ang_vel = ang_vel * self.ang_vel_scale
-        
         
         mimic_history_obs_buf = np.concatenate((self.action_buf, 
                                                 self.ang_vel_buf, 
@@ -120,14 +118,6 @@ class KungFu(FSMState):
                                         np.array([min(self.ref_motion_phase,1.0)])
                                         ),
                                         axis=-1, dtype=np.float32)
-        
-        self.ang_vel_buf = np.concatenate((ang_vel, self.ang_vel_buf[:-3]), axis=-1, dtype=np.float32)
-        self.proj_g_buf = np.concatenate((gravity_orientation, self.proj_g_buf[:-3] ), axis=-1, dtype=np.float32)
-        self.dof_pos_buf = np.concatenate((qj_23dof, self.dof_pos_buf[:-23] ), axis=-1, dtype=np.float32)
-        self.dof_vel_buf = np.concatenate((dqj_23dof, self.dof_vel_buf[:-23] ), axis=-1, dtype=np.float32)
-        self.action_buf = np.concatenate((self.action, self.action_buf[:-23] ), axis=-1, dtype=np.float32)
-        self.ref_motion_phase_buf = np.concatenate((np.array([min(self.ref_motion_phase,1.0)]), self.ref_motion_phase_buf[:-1] ), axis=-1, dtype=np.float32)
-        
         
         mimic_obs_tensor = torch.from_numpy(mimic_obs_buf).unsqueeze(0).cpu().numpy()
         self.action = np.squeeze(self.ort_session.run(None, {self.input_name: mimic_obs_tensor})[0])
@@ -152,6 +142,14 @@ class KungFu(FSMState):
         self.ref_motion_phase = motion_time / self.motion_length
         motion_time = min(motion_time, self.motion_length)
         print(progress_bar(motion_time, self.motion_length), end="", flush=True)
+
+        self.ang_vel_buf = np.concatenate((ang_vel, self.ang_vel_buf[:-3]), axis=-1, dtype=np.float32)
+        self.proj_g_buf = np.concatenate((gravity_orientation, self.proj_g_buf[:-3] ), axis=-1, dtype=np.float32)
+        self.dof_pos_buf = np.concatenate((qj_23dof, self.dof_pos_buf[:-23] ), axis=-1, dtype=np.float32)
+        self.dof_vel_buf = np.concatenate((dqj_23dof, self.dof_vel_buf[:-23] ), axis=-1, dtype=np.float32)
+        self.action_buf = np.concatenate((self.action, self.action_buf[:-23] ), axis=-1, dtype=np.float32)
+        self.ref_motion_phase_buf = np.concatenate((np.array([min(self.ref_motion_phase,1.0)]), self.ref_motion_phase_buf[:-1] ), axis=-1, dtype=np.float32)
+
     
     def exit(self):
         self.action = np.zeros(23, dtype=np.float32)

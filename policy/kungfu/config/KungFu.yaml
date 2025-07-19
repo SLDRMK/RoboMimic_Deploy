@@ -1,21 +1,91 @@
-onnx_path: "kungfu_0609.onnx"
+# onnx_path: "kungfu_0609.onnx"
+# motion_length: 17.433
 
-motion_length: 17.433
-# motion_length: 18.4
+# onnx_path: "taichi.onnx"
+# motion_length: 6.967
 
-kps: [100, 100, 100, 200, 20, 20,
-            100, 100, 100, 200, 20, 20,
-            400, 400, 400,
-            90,   60,  20, 60, 20, 20, 20,
-            90,   60,  20, 60, 20, 20, 20
-            ]
+# onnx_path: "big_dance_clip_122000.onnx"
+# motion_length: 5.7
 
-kds: [2.5, 2.5, 2.5, 5.0, 0.2, 0.1,
-            2.5, 2.5, 2.5, 5.0, 0.2, 0.1,
-            5.0, 5.0, 5.0,
-            2.0, 1.0, 0.4, 1.0, 0.4, 0.4, 0.4,
-            2.0, 1.0, 0.4, 1.0, 0.4, 0.4, 0.4
-            ]
+# onnx_path: "big_dance_clip_natural_82000.onnx"
+# motion_length: 7.7
+
+# onnx_path: "throw_arms_30000.onnx"
+# onnx_path: "throw_arms_69000.onnx"
+# onnx_path: "throw_arms_149000.onnx"
+# onnx_path: "throw_arms_400000.onnx"
+# motion_length: 12.567
+
+# onnx_path: "easy_walk_14000.onnx"
+# onnx_path: "easy_walk_15000.onnx"
+# onnx_path: "easy_walk_47000.onnx"
+# motion_length: 18.267
+
+# onnx_path: "yongchun_tuibugengshou_2_43000.onnx"
+# onnx_path: "yongchun_tuibugengshou_2_64000.onnx"
+# motion_length: 18.0
+
+# onnx_path: "charleston_49800.onnx"
+# motion_length: 20.333
+
+# onnx_path: "chicken_dance_42000.onnx"
+# motion_length: 22.633
+
+# onnx_path: "taichi6_55000.onnx"
+# onnx_path: "taichi6_77000.onnx"
+# onnx_path: "taichi6_new_54000.onnx"
+# motion_length: 182.7
+
+# onnx_path: "taichi6_after_13000.onnx"
+# onnx_path: "taichi6_after_16000.onnx"
+# onnx_path: "taichi6_after_50000.onnx"
+# onnx_path: "taichi6_after_60000.onnx"
+# onnx_path: "taichi6_after_70000.onnx"
+# motion_length: 83.7
+
+# onnx_path: "qianti_172400.onnx"
+# motion_length: 2.633
+
+# onnx_path: "qianti_pbhc_30000.onnx"
+# # onnx_path: "qianti_pbhc_40000.onnx"
+# motion_length: 2.633
+
+# onnx_path: "xsens_test_.onnx"
+# motion_length: 34.033
+
+# onnx_path: "cutted_punch_32000.onnx"
+# motion_length: 8.16
+
+# onnx_path: "chicken_dance_clean_32000.onnx"
+# onnx_path: "chicken_dance_clean_35000.onnx"
+# motion_length: 8.9
+
+# onnx_path: "cutout_handsword_7000.onnx"
+# onnx_path: "cutout_handsword_10000.onnx"
+# onnx_path: "cutout_handsword_12000.onnx"
+onnx_path: "cutout_handsword_42000.onnx"
+motion_length: 9.367
+
+# onnx_path: "chicken_dance_cutin_7000.onnx"
+# onnx_path: "chicken_dance_cutin_12000.onnx"
+# motion_length: 6.9
+
+# onnx_path: "chicekn_dance_clean_shortin_32000.onnx"
+# motion_length: 7.867
+
+kps: [100, 100, 100, 150, 40, 40,
+      100, 100, 100, 150, 40, 40,
+      400, 400, 400,
+      100, 100,  50, 50, 10, 10, 10,
+      100, 100,  50, 50, 10, 10, 10
+      ]
+
+kds: [2, 2, 2, 4, 2, 2,
+      2, 2, 2, 4, 2, 2,
+      5.0, 5.0, 5.0,
+      2, 2, 2, 2, 0.1, 0.1, 0.1,
+      2, 2, 2, 2, 0.1, 0.1, 0.1
+      ]
 
 tau_limit: [88, 88, 88, 139, 50, 50,
             88, 88, 88, 139, 50, 50,
@@ -27,8 +97,8 @@ tau_limit: [88, 88, 88, 139, 50, 50,
 default_angles: [-0.1,  0.0,  0.0,  0.3, -0.2, 0.0, 
                  -0.1,  0.0,  0.0,  0.3, -0.2, 0.0,
                   0.0, 0.0, 0.0,
-                  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
-                  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+                  0.2, 0.2, 0.0, 0.9, 0.0, 0.0, 0.0, 
+                  0.2, -0.2, 0.0, 0.9, 0.0, 0.0, 0.0
                   ]
 
 dof23_index: [ 0, 1, 2, 3, 4, 5,

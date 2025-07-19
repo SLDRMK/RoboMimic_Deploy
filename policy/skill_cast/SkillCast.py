@@ -12,7 +12,7 @@ class SkillCast(FSMState):
         super().__init__()
         self.state_cmd = state_cmd
         self.policy_output = policy_output
-        self.name = FSMStateName.SKILL_COOLDOWN
+        self.name = FSMStateName.SKILL_CAST
         self.name_str = "skill_cast"
         self.alpha = 0.
         self.cur_step = 0
@@ -64,6 +64,7 @@ class SkillCast(FSMState):
     def enter(self):    
         self.alpha = 0.
         self.cur_step = 0
+        self.saved_skill_cmd = self.state_cmd.skill_cmd  # 保存技能命令
         for i in range(self.upper_dof_size):
             self.upper_init_dof_pos[i] = self.state_cmd.q[self.upper_body_motor_idx[i]]
             
@@ -120,19 +121,16 @@ class SkillCast(FSMState):
         pass
     
     def checkChange(self):
-        if(self.cur_step >= self.num_step and self.state_cmd.skill_cmd == FSMCommand.SKILL_1):
-            self.state_cmd.skill_cmd = FSMCommand.INVALID
+        if(self.cur_step >= self.num_step and self.saved_skill_cmd == FSMCommand.SKILL_1):
             return FSMStateName.SKILL_Dance
-        elif(self.cur_step >= self.num_step and self.state_cmd.skill_cmd == FSMCommand.SKILL_2):
-            self.state_cmd.skill_cmd = FSMCommand.INVALID
+        elif(self.cur_step >= self.num_step and self.saved_skill_cmd == FSMCommand.SKILL_2):
             return FSMStateName.SKILL_KungFu
-        elif(self.cur_step >= self.num_step and self.state_cmd.skill_cmd == FSMCommand.SKILL_4):
-            self.state_cmd.skill_cmd = FSMCommand.INVALID
+        elif(self.cur_step >= self.num_step and self.saved_skill_cmd == FSMCommand.SKILL_4):
             return FSMStateName.SKILL_KungFu2
         elif(self.state_cmd.skill_cmd == FSMCommand.PASSIVE):
             self.state_cmd.skill_cmd = FSMCommand.INVALID
             return FSMStateName.PASSIVE
         else:
             self.state_cmd.skill_cmd = FSMCommand.INVALID
-            return FSMStateName.SKILL_COOLDOWN
+            return FSMStateName.SKILL_CAST
         

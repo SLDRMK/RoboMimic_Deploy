@@ -4,6 +4,7 @@ from policy.passive.PassiveMode import PassiveMode
 from policy.fixedpose.FixedPose import FixedPose
 from policy.loco_mode.LocoMode import LocoMode
 from policy.kungfu.KungFu import KungFu
+# from policy.kungfu.KungFu_dul_policy import KungFu
 from policy.dance.Dance import Dance
 from policy.skill_cooldown.SkillCooldown import SkillCooldown
 from policy.skill_cast.SkillCast import SkillCast

@@ -101,6 +101,7 @@ class Kick(FSMState):
         dqj_23dof = dqj_23dof * self.dof_vel_scale
         ang_vel = ang_vel * self.ang_vel_scale
         
+        
         mimic_history_obs_buf = np.concatenate((self.action_buf, 
                                                 self.ang_vel_buf, 
                                                 self.dof_pos_buf, 
@@ -126,7 +127,7 @@ class Kick(FSMState):
         self.dof_vel_buf = np.concatenate((dqj_23dof, self.dof_vel_buf[:-23] ), axis=-1, dtype=np.float32)
         self.action_buf = np.concatenate((self.action, self.action_buf[:-23] ), axis=-1, dtype=np.float32)
         self.ref_motion_phase_buf = np.concatenate((np.array([min(self.ref_motion_phase,1.0)]), self.ref_motion_phase_buf[:-1] ), axis=-1, dtype=np.float32)
-        
+
         mimic_obs_tensor = torch.from_numpy(mimic_obs_buf).unsqueeze(0).cpu().numpy()
         self.action = np.squeeze(self.ort_session.run(None, {self.input_name: mimic_obs_tensor})[0])
         target_dof_pos = np.zeros(29)
