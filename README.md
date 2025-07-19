@@ -1,147 +1,217 @@
-<div align="center">
-  <h1 align="center">RoboMimic Deploy</h1>
-  <p align="center">
-    <span> 🌎English </span> | <a href="README_zh.md"> 🇨🇳中文 </a>
-  </p>
-</div>
+# RoboMimic Deploy - Enhanced Keyboard Control Version
 
-<p align="center">
-  <strong>​RoboMimic Deploy​​ is a multi-policy robot deployment framework based on a state-switching mechanism. Currently, the included policies are designed for the ​​Unitree G1 robot (29-DoF)​​.</strong> 
-</p>
+## Project Overview
 
-## Installation and Configuration
+This is an enhanced version of [Robomimic Deploy](https://github.com/ccrpRepo/RoboMimic_Deploy), a multi-policy robot deployment framework specifically designed for the Unitree G1 robot (29-DoF). This version adds **keyboard control functionality** and **real-time status display** to make robot control more convenient and reliable.
 
-## 1. Create a Virtual Environment
+## 🌟 Key Features
 
-It is recommended to run training or deployment programs in a virtual environment. We suggest using Conda to create one.
+### New Features
+- **⌨️ Keyboard Control**: Real-time keyboard control without requiring a gamepad
+- **📊 Real-time Status Display**: Live display of robot status and control information
+- **🔄 Reliable Mode Switching**: Improved state machine switching logic
+- **🎯 Precise Control**: Digital joystick control with precise speed adjustment
 
-### 1.1 Create a New Environment
+### Supported Control Modes
+| Mode Name | Description | Use Case |
+|-----------|-------------|----------|
+| **PassiveMode** | Damping protection mode | Safe startup and emergency stop |
+| **FixedPose** | Position control reset | Robot pose initialization |
+| **LocoMode** | Stable walking control | Daily movement and navigation |
+| **Dance** | Charleston dance routine | Performance and demonstration |
+| **KungFu** | Martial arts movements | Simulation environment testing |
+| **KungFu2** | Martial arts training | Simulation environment testing |
+| **Kick** | Kicking movements | Simulation environment testing |
+| **SkillCast** | Upper body positioning control | Pre-skill execution preparation |
+| **SkillCooldown** | Lower body balancing control | Post-skill execution recovery |
 
-Use the following command to create a virtual environment:
+## 🛠️ Environment Setup
+
+### System Requirements
+- **Operating System**: Ubuntu 18.04+ / macOS 10.15+
+- **Python Version**: Python 3.8
+- **Robot Hardware**: Unitree G1 (29-DoF with 3-DoF waist)
+
+### 1. Create Virtual Environment
 ```bash
+# Create virtual environment using Conda
 conda create -n robomimic python=3.8
-```
-
-### 1.2 Activate the Virtual Environment
-
-```bash
 conda activate robomimic
 ```
 
----
-
-## 2. Install Dependencies
-
-### 2.1 Install PyTorch
-PyTorch is a neural network computation framework used for model training and inference. Install it with the following command:
+### 2. Install Dependencies
 ```bash
+# Install PyTorch
 conda install pytorch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 pytorch-cuda=12.1 -c pytorch -c nvidia
-```
 
-### 2.2 Install RoboMimic_Deploy
-
-#### 2.2.1 Download
-Clone the repository via git:
-
-```bash
-git clone https://github.com/ccrpRepo/RoboMimic_Deploy.git
-```
-
-#### 2.2.2 Install Components
-
-Navigate to the directory and install:
-```bash
-cd RoboMimic_Deploy
+# Install basic dependencies
 pip install numpy==1.20.0
 pip install onnx onnxruntime
-```
+pip install pyyaml
 
-#### 2.2.3 Install unitree_sdk2_python
-
-```bash
+# Install Unitree SDK
 git clone https://github.com/unitreerobotics/unitree_sdk2_python.git
 cd unitree_sdk2_python
 pip install -e .
 ```
----
-## Running the Code
 
-## 1. Run Mujoco Simulation
+### 3. Project Configuration
 ```bash
-python deploy_mujoco/deploy_mujoco.py
+# Clone the project
+git clone https://github.com/SLDRMK/RoboMimic_Deploy.git
+cd RoboMimic_Deploy
+
+# Check configuration files
+ls deploy_mujoco/config/
+ls deploy_real/config/
 ```
 
-## 2. Policy Descriptions
-| Mode Name        | Description                                                                 |
-|------------------|-----------------------------------------------------------------------------|
-| **PassiveMode**  | Damping protection mode                                                     |
-| **FixedPose**    | Position control reset to default joint values                              |
-| **LocoMode**     | Stable walking control mode                                                 |
-| **Dance**        | Charleston dance routine                                                    |
-| **KungFu**       | Martial arts movement                                                       |
-| **KungFu2**      | Failed martial arts training                                     |
-| **Kick**         | Bad mimic policy                                     |
-| **SkillCast**    | Lower body + waist stabilization with upper limbs positioned to specific joint angles (typically executed before Mimic strategy) |
-| **SkillCooldown**| Lower body + waist continuous balancing with upper limbs reset to default angles (typically executed after Mimic strategy) |
+## 🚀 Quick Start
 
+### MuJoCo Simulation Environment
 
----
-## 3. Operation Instructions in Simulation
-1. Connect an Xbox controller.
-2. Run the simulation program:
+#### 1. Launch Simulation
 ```bash
-python deploy_mujoco/deploy_mujoco.py
+# Use keyboard control (recommended)
+python deploy_mujoco/deploy_mujoco_keyboard_realtime.py
+
+# Or use basic keyboard control
+python deploy_mujoco/deploy_mujoco_keyboard.py
 ```
-3. Press the ​​Start​​ button to enter position control mode.
-4. Hold ​​R1 + A​​ to enter ​​LocoMode​​, then press BACKSPACE in the simulation to make the robot stand. Afterward, use the joystick to control walking.
-5. Hold ​​R1 + X​​ to enter ​​Dance​​ mode—the robot will perform the Charleston. In this mode:
-    - Press ​​Select​​ at any time to switch to damping protection mode.
-    - Hold ​​R1 + A​​ to return to walking mode (not recommended).
-    - Press ​​Start​​ to return to position control mode.
 
-6. The terminal will display a progress bar for the dance. After completion, press ​​R1 + A​​ to return to normal walking mode.
-7. In ​​LocoMode​​, pressing ​​R1 + Y​​ triggers a Martial arts movement —​ ​use only in simulation​​.
-8. In ​​LocoMode​​, pressing ​​L1 + Y​​ triggers a Martial arts movement(Failed) —​ ​use only in simulation​​.
-9. In ​​LocoMode​​, pressing ​​R1 + B​ triggers a Kick movement(Failed) —​ ​use only in simulation​​.
----
-## 4. Real Robot Operation Instructions
+#### 2. Control Instructions
+- **Number keys 1-7**: Switch between different modes
+- **WASD**: Forward/backward/left/right movement
+- **JL**: Left/right rotation
+- **Spacebar**: Reset joystick
+- **Q**: Exit program
 
-1. Power on the robot and suspend it (e.g., with a harness). and then hold L2+R2
+### Real Robot Deployment
 
-2. Run the deploy_real program:
+#### 1. Safety Preparation
+- Ensure the robot is suspended safely
+- Check power and network connections
+- Prepare emergency stop button
+
+#### 2. Launch Control
 ```bash
+# Use keyboard control (recommended)
+python deploy_real/deploy_real_keyboard.py
+
+# Or use gamepad control
 python deploy_real/deploy_real.py
 ```
-3. Press the ​​Start​​ button to enter position control mode.
-4. Subsequent operations are the same as in simulation.
 
----
-## Important Notes
-### 1. Framework Compatibility Notice
-The current framework does not natively support deployment on G1 robots equipped with Orin NX platforms. Preliminary analysis suggests compatibility issues with the `unitree_python_sdk` on Orin systems. For onboard Orin deployment, we recommend the following alternative solution:
+#### 3. Operation Procedure
+1. Start the program and wait for DDS connection success
+2. Press `1` to enter damping protection mode
+3. Press `2` to enter position control mode for initialization
+4. Press `3` to enter walking mode and start control
+5. Use WASD for movement control
 
-- Replace with [unitree_sdk2](https://github.com/unitreerobotics/unitree_sdk2) (official C++ SDK)
-- Implement a dual-node ROS architecture:
-  - **C++ Node**: Handles data transmission between robot and controller
-  - **Python Node**: Dedicated to policy inference
+## 📁 Project Structure
 
-### 2. Mimic Policy Reliability Warning
-The Mimic policy does not guarantee 100% success rate, particularly on slippery/sandy surfaces. In case of robot instability:
-- Press `F1` to activate **PassiveMode** (damping protection)
-- Press `Select` to immediately terminate the control program
+```
+RoboMimic_Deploy/
+├── deploy_mujoco/           # MuJoCo simulation environment
+│   ├── deploy_mujoco.py              # Gamepad control version
+│   ├── deploy_mujoco_keyboard.py     # Basic keyboard control
+│   ├── deploy_mujoco_keyboard_realtime.py  # Real-time keyboard control
+│   ├── README_keyboard.md            # Simulation environment guide
+│   └── config/
+│       └── mujoco.yaml               # Simulation configuration
+├── deploy_real/             # Real robot deployment
+│   ├── deploy_real.py               # Gamepad control version
+│   ├── deploy_real_keyboard.py      # Real-time keyboard control
+│   ├── README_keyboard.md           # Real robot deployment guide
+│   ├── config.py                    # Configuration loader
+│   └── config/
+│       └── real.yaml                # Real robot configuration
+├── policy/                  # Policy models
+│   ├── dance/              # Dance policy
+│   ├── kungfu/             # Martial arts policy
+│   ├── loco_mode/          # Walking policy
+│   ├── passive/            # Passive mode
+│   └── ...                 # Other policies
+├── FSM/                    # Finite State Machine
+├── common/                 # Common components
+├── g1_description/         # G1 robot description files
+└── run.sh                  # Quick start script
+```
 
-### 3. Charleston Dance (R1+X) - Stable Policy Notes
-Currently the only verified stable policy on physical robots:
+## 🎮 Control Mode Details
 
-⚠️ **Important Precautions**:
-- **Palm Removal Recommended**: The original training didn't account for palm collisions (author's G1 lacked palms)
-- **Initial/Final Stabilization**: Brief manual stabilization may be required when starting/ending the dance
-- **Post-Dance Transition**: While switching to **Locomotion/PositionControl/PassiveMode** is possible, we recommend:
-  - First transition to **PositionControl** or **PassiveMode**
-  - Provide manual stabilization during transition
+### Simulation Environment Operation
+1. **Launch Simulation**: Run keyboard control program
+2. **Mode Switching**: Use number keys 1-7 for quick switching
+3. **Movement Control**: WASD for forward/backward/left/right movement
+4. **Rotation Control**: JL for left/right rotation
+5. **Safe Exit**: Press Q or Ctrl+C to exit
 
-### 4. Other Movement Advisories
-All other movements are currently **not recommended** for physical robot deployment.
+### Real Robot Operation Procedure
+1. **Safety Check**: Ensure robot is safely suspended
+2. **Network Connection**: Check DDS communication status
+3. **Initialization**: Start from damping mode
+4. **Mode Switching**: Gradually switch to target mode
+5. **Real-time Control**: Use keyboard for precise control
+6. **Safe Stop**: Switch to damping mode in time
 
-### 5. Strong Recommendation
-**Always** master operations in simulation before attempting physical robot deployment.
+## ⚠️ Safety Considerations
+
+### Simulation Environment
+- No safety risks, free to test
+- Recommend familiarizing with all modes before real robot operation
+
+### Real Robot
+- **Must ensure robot is safely suspended**
+- **Prepare emergency stop mechanism**
+- **Maintain safe distance**
+- **Avoid sudden mode switching**
+- **Recommend thorough testing in simulation environment first**
+
+## 🔧 Troubleshooting
+
+### Common Issues
+1. **No Response to Keys**
+   - Check if terminal is in input state
+   - Ensure no other program is occupying keyboard
+
+2. **Mode Switching Failure**
+   - Check checkChange() method of current mode
+   - Ensure FSM state machine works properly
+
+3. **DDS Connection Failure**
+   - Check network configuration
+   - Ensure Unitree SDK is properly installed
+
+4. **Control Delay**
+   - Reduce control frequency
+   - Check network latency
+
+### Debug Tools
+- `debug_fsm_switches.py`: FSM state switching debug
+- `debug_kungfu_enter.py`: Martial arts mode entry debug
+- `joystick_debug.py`: Gamepad debug tool
+
+## 📚 Detailed Documentation
+
+- [MuJoCo Simulation Environment Guide](./deploy_mujoco/README_keyboard.md)
+- [Real Robot Deployment Guide](./deploy_real/README_keyboard.md)
+
+## 🤝 Contributing
+
+Welcome to submit Issues and Pull Requests to improve this project!
+
+## 📄 License
+
+This project is based on the original [Robomimic Deploy](https://github.com/ccrpRepo/RoboMimic_Deploy) project and follows the same license.
+
+## 🙏 Acknowledgments
+
+- Thanks to [ccrpRepo](https://github.com/ccrpRepo) for providing the original RoboMimic Deploy project
+- Thanks to Unitree Robotics for providing the G1 robot platform and SDK
+
+## 🌍 Language Versions
+
+- [中文版 (Chinese)](./README_zh.md)
+- [English](./README.md) 

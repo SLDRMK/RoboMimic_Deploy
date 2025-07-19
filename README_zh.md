@@ -1,157 +1,212 @@
-<div align="center">
-  <h1 align="center">RoboMimic Deploy</h1>
-  <p align="center">
-    <a href="README.md">🌎 English</a> | <span>🇨🇳 中文</span>
-  </p>
-</div>
+# RoboMimic Deploy - 键盘控制增强版
 
-<p align="center">
-  🎮🚪 <strong>RoboMimic Deploy 是一个基于状态切换机制的机器人多策略部署框架，目前包含的策略适用于宇树G1机器人(29dof)</strong> 🚪🎮
-</p>
+## 项目简介
 
-## 安装配置
+这是 [Robomimic Deploy](https://github.com/ccrpRepo/RoboMimic_Deploy) 的一个增强版本，专门为Unitree G1机器人（29自由度）设计的多策略机器人部署框架。本版本在原有基础上添加了**键盘控制功能**和**实时状态显示**，让机器人控制更加便捷和可靠。
 
-## 1. 创建虚拟环境
+## 🌟 主要特性
 
-建议在虚拟环境中运行训练或部署程序，推荐使用 Conda 创建虚拟环境。
+### 新增功能
+- **⌨️ 键盘控制**：支持实时键盘控制，无需手柄
+- **📊 实时状态显示**：实时显示机器人状态和控制信息
+- **🔄 可靠模式切换**：改进的状态机切换逻辑
+- **🎯 精确控制**：支持数字摇杆控制，精确调节速度
 
-### 1.1 创建新环境
+### 支持的控制模式
+| 模式名称 | 描述 | 适用场景 |
+|---------|------|----------|
+| **PassiveMode** | 阻尼保护模式 | 安全启动和紧急停止 |
+| **FixedPose** | 位置控制重置 | 机器人姿态初始化 |
+| **LocoMode** | 稳定行走控制 | 日常移动和导航 |
+| **Dance** | 查尔斯顿舞蹈 | 表演和展示 |
+| **KungFu** | 武术动作 | 仿真环境测试 |
+| **KungFu2** | 武术训练动作 | 仿真环境测试 |
+| **Kick** | 踢腿动作 | 仿真环境测试 |
+| **SkillCast** | 上半身定位控制 | 技能执行前准备 |
+| **SkillCooldown** | 下半身平衡控制 | 技能执行后恢复 |
 
-使用以下命令创建虚拟环境：
+## 🛠️ 环境配置
 
+### 系统要求
+- **操作系统**：Ubuntu 18.04+ / macOS 10.15+
+- **Python版本**：Python 3.8
+- **机器人硬件**：Unitree G1 (29自由度，带3自由度腰部)
+
+### 1. 创建虚拟环境
 ```bash
+# 使用Conda创建虚拟环境
 conda create -n robomimic python=3.8
-```
-
-### 1.2 激活虚拟环境
-
-```bash
 conda activate robomimic
 ```
 
----
-
-## 2. 安装依赖
-
-### 2.1 安装 PyTorch
-
-PyTorch 是一个神经网络计算框架，用于模型训练和推理。使用以下命令安装：
-
+### 2. 安装依赖
 ```bash
+# 安装PyTorch
 conda install pytorch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 pytorch-cuda=12.1 -c pytorch -c nvidia
-```
 
-### 2.2 安装 RoboMimic_Deploy
-
-#### 2.2.1 下载
-
-通过 Git 克隆仓库：
-
-```bash
-git clone https://github.com/ccrpRepo/RoboMimic_Deploy.git
-```
-
-#### 2.2.2 安装组件
-
-进入目录并安装：
-
-```bash
-cd RoboMimic_Deploy
+# 安装基础依赖
 pip install numpy==1.20.0
 pip install onnx onnxruntime
-```
-#### 2.2.3 安装unitree_sdk2_python
+pip install pyyaml
 
-```bash
+# 安装Unitree SDK
 git clone https://github.com/unitreerobotics/unitree_sdk2_python.git
 cd unitree_sdk2_python
 pip install -e .
 ```
----
-## 运行代码
 
-## 1. 运行Mujoco仿真代码
+### 3. 项目配置
 ```bash
-python deploy_mujoco/deploy_mujoco.py
+# 克隆项目
+git clone https://github.com/SLDRMK/RoboMimic_Deploy.git
+cd RoboMimic_Deploy
+
+# 检查配置文件
+ls deploy_mujoco/config/
+ls deploy_real/config/
 ```
----
-## 2. Policy 说明
-| 模式名称          | 描述                                                                 |
-|------------------|----------------------------------------------------------------------|
-| **PassiveMode**  | 阻尼保护模式                                                         |
-| **FixedPose**    | 位控恢复至默认关节值                                                 |
-| **LocoMode**     | 用于稳定行走的控制模式                                               |
-| **Dance**        | 查尔斯顿舞蹈                                                         |
-| **KungFu**       | 武术动作                                                             |
-| **KungFu2**      | 训练失败的武术动作                                                   |
-| **Kick**         | 拿来凑数的动作                                                       |
-| **SkillCast**    | 下肢+腰部稳定站立，上肢位控至特定关节角，一般在执行Mimic策略前执行   |
-| **SkillCooldown**| 下肢+腰部持续平衡，上肢恢复至默认关节角，一般在执行Mimic策略后执行    |
 
----
-## 3. 仿真操作说明
+## 🚀 快速开始
 
-1. 连接Xbox手柄
+### MuJoCo仿真环境
 
-2. 运行仿真程序：
+#### 1. 启动仿真
 ```bash
-python deploy_mujoco/deploy_mujoco.py
+# 使用键盘控制（推荐）
+python deploy_mujoco/deploy_mujoco_keyboard_realtime.py
+
+# 或使用基础键盘控制
+python deploy_mujoco/deploy_mujoco_keyboard.py
 ```
-3. Start键进入位控模式
 
-4. 同时按住R1+A，进入LocoMode，并按下`BACKSPACE`在仿真中使机器人站立，之后能通过摇杆控制机器人行走
+#### 2. 控制说明
+- **数字键 1-7**：切换不同模式
+- **WASD**：前进/后退/左移/右移
+- **JL**：左转/右转
+- **空格键**：重置摇杆
+- **Q**：退出程序
 
-5. 同时按住R1+X，进入Dance，机器人开始跳查尔斯顿舞蹈，在该模式下，可以随时按下Select进入阻尼保护模式，也可以按住R1+A恢复行走模式（不推荐），或按Start进入位控模式（不推荐）
+### 真实机器人部署
 
-6. 终端会显示舞蹈的进度条，结束后可按下R1+A恢复至正常行走模式
+#### 1. 安全准备
+- 确保机器人处于悬挂状态
+- 检查电源和网络连接
+- 准备紧急停止按钮
 
-7. 在LocoMode模式下，按R1+Y让机器人表演武术动作，**只推荐在仿真中使用**
-
-8. 在LocoMode模式下，按L1+Y让机器人表演训练失败的武术动作，**只推荐在仿真中使用**
-
-9. 在LocoMode模式下，按R1+B让机器人表演踢腿动作，**只推荐在仿真中使用**
----
-## 4. 真机操作说明
-1. 开机后将机器人吊起来，按L2+R2进入调试模式
-
-2. 运行deploy_real程序：
+#### 2. 启动控制
 ```bash
+# 使用键盘控制（推荐）
+python deploy_real/deploy_real_keyboard.py
+
+# 或使用手柄控制
 python deploy_real/deploy_real.py
 ```
-3. Start键进入位控模式
 
-4. 后续操作与仿真中一致
+#### 3. 操作流程
+1. 启动程序，等待DDS连接成功
+2. 按 `1` 进入阻尼保护模式
+3. 按 `2` 进入位控模式进行初始化
+4. 按 `3` 进入行走模式开始控制
+5. 使用WASD进行移动控制
 
----
-## 注意事项
-### 1. 框架兼容性说明
-当前框架暂不支持在搭载Orin NX平台的G1机器人上直接部署。初步分析可能是由于`unitree_python_sdk`在Orin平台上的兼容性问题。针对机载Orin平台的部署需求，建议采用以下替代方案：
+## 📁 项目结构
 
-- 使用[unitree_sdk2](https://github.com/unitreerobotics/unitree_sdk2)替代原Python SDK
-- 基于ROS构建双节点架构：
-  - **C++节点**：负责机器人与遥控器之间的数据收发
-  - **Python节点**：专用于策略推理
+```
+RoboMimic_Deploy/
+├── deploy_mujoco/           # MuJoCo仿真环境
+│   ├── deploy_mujoco.py              # 手柄控制版本
+│   ├── deploy_mujoco_keyboard.py     # 基础键盘控制
+│   ├── deploy_mujoco_keyboard_realtime.py  # 实时键盘控制
+│   ├── README_keyboard.md            # 仿真环境说明
+│   └── config/
+│       └── mujoco.yaml               # 仿真配置
+├── deploy_real/             # 真实机器人部署
+│   ├── deploy_real.py               # 手柄控制版本
+│   ├── deploy_real_keyboard.py      # 实时键盘控制
+│   ├── README_keyboard.md           # 真机部署说明
+│   ├── config.py                    # 配置加载器
+│   └── config/
+│       └── real.yaml                # 真机配置
+├── policy/                  # 策略模型
+│   ├── dance/              # 舞蹈策略
+│   ├── kungfu/             # 武术策略
+│   ├── loco_mode/          # 行走策略
+│   ├── passive/            # 被动模式
+│   └── ...                 # 其他策略
+├── FSM/                    # 有限状态机
+├── common/                 # 公共组件
+├── g1_description/         # G1机器人描述文件
+└── run.sh                  # 快速启动脚本
+```
 
-### 2. Mimic策略可靠性警告
-Mimic策略不保证100%成功率，特别是在湿滑/沙地等复杂地面上。若出现机器人失控情况：
-- 按下`F1`键激活**阻尼保护模式**(PassiveMode)
-- 按下`Select`键立即终止控制程序
+## 🎮 控制模式详解
 
-### 3. 查尔斯顿舞蹈(R1+X) - 稳定策略说明
-目前唯一在真机上验证稳定的策略：
+### 仿真环境操作
+1. **启动仿真**：运行键盘控制程序
+2. **模式切换**：使用数字键1-7快速切换
+3. **移动控制**：WASD控制前进后退左右移动
+4. **旋转控制**：JL控制左右旋转
+5. **安全退出**：按Q或Ctrl+C退出
 
-⚠️ **重要注意事项**：
-- **建议拆除手掌**：原始训练未考虑手掌碰撞（作者的G1初始无手掌）
-- **起止稳定需求**：舞蹈开始/结束时可能需要短暂人工稳定
-- **舞蹈后过渡**：虽然可以切换至**行走模式/位控模式/阻尼模式**，但建议：
-  - 先切换至**位控模式**或**阻尼模式**
-  - 过渡期间需提供人工稳定
+### 真机操作流程
+1. **安全检查**：确保机器人安全悬挂
+2. **网络连接**：检查DDS通信状态
+3. **初始化**：从阻尼模式开始
+4. **模式切换**：逐步切换到目标模式
+5. **实时控制**：使用键盘进行精确控制
+6. **安全停止**：及时切换到阻尼模式
 
-### 4. 其他动作建议
-其他所有动作目前均**不建议**在真机上部署。
+## ⚠️ 安全注意事项
 
-### 5. 强烈建议
-**务必**先在仿真环境中熟练操作，再尝试真机部署。
+### 仿真环境
+- 无安全风险，可自由测试
+- 建议熟悉所有模式后再进行真机操作
 
+### 真实机器人
+- **必须确保机器人安全悬挂**
+- **准备紧急停止机制**
+- **保持安全距离**
+- **避免突然的模式切换**
+- **建议先在仿真环境中充分测试**
 
+## 🔧 故障排除
 
+### 常见问题
+1. **按键无响应**
+   - 检查终端是否处于输入状态
+   - 确保没有其他程序占用键盘
+
+2. **模式切换失败**
+   - 检查当前模式的checkChange()方法
+   - 确保FSM状态机正常工作
+
+3. **DDS连接失败**
+   - 检查网络配置
+   - 确保Unitree SDK正确安装
+
+4. **控制延迟**
+   - 降低控制频率
+   - 检查网络延迟
+
+### 调试工具
+- `debug_fsm_switches.py`：FSM状态切换调试
+- `debug_kungfu_enter.py`：武术模式进入调试
+- `joystick_debug.py`：手柄调试工具
+
+## 📚 详细文档
+
+- [MuJoCo仿真环境说明](./deploy_mujoco/README_keyboard.md)
+- [真实机器人部署说明](./deploy_real/README_keyboard.md)
+
+## 🤝 贡献指南
+
+欢迎提交Issue和Pull Request来改进这个项目！
+
+## 📄 许可证
+
+本项目基于原始 [Robomimic Deploy](https://github.com/ccrpRepo/RoboMimic_Deploy) 项目，遵循相同的许可证。
+
+## 🙏 致谢
+
+- 感谢 [ccrpRepo](https://github.com/ccrpRepo) 提供的原始RoboMimic Deploy项目
+- 感谢Unitree Robotics提供的G1机器人平台和SDK
