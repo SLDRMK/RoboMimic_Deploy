@@ -38,7 +38,7 @@ class RealtimeKeyboardController:
             print("  4: 舞蹈模式 (SKILL_1)")
             print("  5: 武术模式 (SKILL_2)")
             print("  6: 踢腿模式 (SKILL_3)")
-            print("  7: 武术2模式 (SKILL_4)")
+            print("  7: 上肢舞蹈模式 (SKILL_4)")
             print("  q: 退出程序")
             print("  w/s/a/d: 加速控制 (前进/后退/左移/右移) +0.2")
             print("  j/l: 转身加速 (左转/右转) +0.2")
@@ -94,7 +94,7 @@ class RealtimeKeyboardController:
             self.current_cmd = "SKILL_3 (踢腿模式)"
         elif key == '7':
             self.command_queue.put(FSMCommand.SKILL_4)
-            self.current_cmd = "SKILL_4 (武术2模式)"
+            self.current_cmd = "SKILL_4 (上肢舞蹈模式)"
         elif key == 'w':
             self.vel_cmd[0] += 0.2  # 前进加速
             self.vel_cmd[0] = min(self.vel_cmd[0], 2.0)  # 限制最大速度
@@ -170,7 +170,7 @@ def print_status_table(keyboard_controller, FSM_controller, qpos=None):
     print("4 → 舞蹈模式 (SKILL_1)")
     print("5 → 武术模式 (SKILL_2)")
     print("6 → 踢腿模式 (SKILL_3)")
-    print("7 → 武术2模式 (SKILL_4)")
+    print("7 → 上肢舞蹈模式 (SKILL_4)")
     print("w/s/a/d → 加速控制 (前进/后退/左移/右移) +0.2")
     print("j/l → 转身加速 (左转/右转) +0.2")
     print("z → 停止走路")
